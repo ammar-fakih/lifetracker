@@ -9,11 +9,11 @@ CREATE TABLE users (
 
 CREATE TABLE exercises (
   id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
   category TEXT NOT NULL,
   duration INTEGER NOT NULL,
   intensity TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  name TEXT NOT NULL,
   user_id INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
