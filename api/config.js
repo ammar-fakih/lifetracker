@@ -20,6 +20,8 @@ function getDatabaseUri() {
 
 const BCRYPT_WORK_FACTOR = 13;
 
+const SECRET_KEY = process.env.SECRET_KEY || 'ammarSecretKey';
+
 // console.log('process.env'.yellow, Object.keys(proccess.env));
 console.log('App Config'.red);
 console.log('PORT:'.blue, PORT);
@@ -30,4 +32,5 @@ module.exports = {
   PORT,
   getDatabaseUri,
   BCRYPT_WORK_FACTOR,
+  SECRET_KEY,
 };

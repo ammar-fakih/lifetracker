@@ -22,47 +22,48 @@ export default function NavBar() {
         </Button>
         <Button
           _hover={{
-            background: 'white',
             color: 'teal.500',
           }}>
           Exercise
         </Button>
         <Button
           _hover={{
-            background: 'white',
             color: 'teal.500',
           }}>
           Nutrition
         </Button>
         <Button
           _hover={{
-            background: 'white',
             color: 'teal.500',
           }}>
           Sleep
         </Button>
         <NavLink
           to="/login"
-          style={({isActive}) => {
+          style={({ isActive }) => {
             return { color: isActive ? 'var(--orange)' : 'black' };
           }}>
           <Button
             _hover={{
-              background: 'white',
               color: 'teal.500',
             }}>
             Log In
           </Button>
         </NavLink>
-        <Button
-          _hover={{
-            background: 'white',
-            color: 'teal.500',
-          }}
-          bg="green"
-          color="white">
-          Sign Up
-        </Button>
+        <NavLink
+          to="/signup"
+          style={({ isActive }) => {
+            return { color: isActive ? 'var(--orange)' : 'black' };
+          }}>
+          <Button
+            _hover={{
+              color: 'teal.500',
+            }}
+            bg="green"
+            color="white">
+            Sign Up
+          </Button>
+        </NavLink>
       </ButtonGroup>
     </Box>
   );

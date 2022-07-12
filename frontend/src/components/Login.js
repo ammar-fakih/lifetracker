@@ -21,7 +21,7 @@ export default function Login({
 
   return (
     <Center w="100%" p="10">
-      <Box backgroundColor="white" centerContent borderRadius="lg" w="800px">
+      <Box backgroundColor="white" borderRadius="lg" w="800px">
         <Heading padding="10">Log In</Heading>
         <Stack spacing="2" p="10">
           <Input
@@ -29,7 +29,6 @@ export default function Login({
             placeholder="email"
             color="black"
             backgroundColor="white"
-            backgroundOpacity="1"
             onChange={(e) => {
               handleChangeLogin({
                 password: loginInfo.password,

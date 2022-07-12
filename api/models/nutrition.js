@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const { BCRYPT_WORK_FACTOR } = require('../config');
 const { BadRequestError, UnauthorizedError } = require('../utils/errors');
 
-class User {
+class Nutrition {
   static async makePublicUser(user) {
     return {
       id: user.id,
@@ -51,7 +51,6 @@ class User {
     });
 
     const existingUser = await this.fetchUserByEmail(credentials.email);
-    console.log('existingUser', existingUser);
     if (existingUser) {
       throw new BadRequestError(`Duplicate email: ${credentials.email}`);
     }
@@ -97,4 +96,4 @@ class User {
   }
 }
 
-module.exports = User;
+module.exports = Nutrition;
