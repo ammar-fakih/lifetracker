@@ -9,13 +9,13 @@ const types = ['exercise', 'sleep', 'nutrition'];
 // Routes
 //
 
-router.get('/', security.requireAuthenticatedUser, (req, res, next) => {
+router.get('/', security.requireAuthenticatedUser, async (req, res, next) => {
   try {
     const { email } = res.locals.user;
     let logs = {};
-    types.forEach(async (type) => {
-      logs[type] = await Tracking.getLogs(email, type);
-    });
+    for (const type of types) {
+      logs[type] = await Tracking.fetchLogs(email, type);
+    }
     return res.status(200).json(logs);
   } catch (e) {
     next(e);
