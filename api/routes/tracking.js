@@ -3,15 +3,35 @@ const express = require('express');
 const Tracking = require('../models/tracking');
 const router = express.Router();
 const security = require('../middleware/security');
+const types = ['exercise', 'sleep', 'nutrition'];
+
+//
+// Routes
+//
+
+router.get('/', security.requireAuthenticatedUser, (req, res, next) => {
+  try {
+    const { email } = res.locals.user;
+    let logs = {};
+    types.forEach(async (type) => {
+      logs[type] = await Tracking.getLogs(email, type);
+    });
+    return res.status(200).json(logs);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.get(
-  '/nutrition',
+  '/:type',
   security.requireAuthenticatedUser,
   async (req, res, next) => {
     try {
       // take user email and password and  attempt to authenticate
-      const user = await Tracking.login(req.body);
-      return res.status(200).json({ user });
+      const { type } = req.params;
+      const { email } = res.locals.user;
+      const response = await Tracking.fetchLogs(email, type);
+      return res.status(200).json({ [type]: response });
     } catch (e) {
       next(e);
     }
@@ -19,64 +39,20 @@ router.get(
 );
 
 router.post(
-  '/nutrition',
+  '/:type',
   security.requireAuthenticatedUser,
   async (req, res, next) => {
     try {
       // take user information and attempt create in user in database
+      const { type } = req.params;
+      const data = req.body[type];
       const { email } = res.locals.user;
-      const log = await Tracking.addToLog(
-        email,
-        req.body.nutrition,
-        'nutrition_logs'
-      );
+      const log = await Tracking.addToLog(email, data, type);
       return res.status(201).json({ log });
     } catch (e) {
       next(e);
     }
   }
 );
-
-// router.get('/sleep', security.requireAuthenticatedUser, async (req, res, next) => {
-//   try {
-//     // take user email and password and  attempt to authenticate
-//     const user = await Tracking.login(req.body);
-//     return res.status(200).json({ user });
-//   } catch (e) {
-//     next(e);
-//   }
-// });
-
-// router.post('/sleep', security.requireAuthenticatedUser, async (req, res, next) => {
-//   try {
-//     // take user information and attempt create in user in database
-//     const { email } = res.locals.user;
-//     const log = await Tracking.addToLog(email, "nutrition", req.body.nutrition);
-//     return res.status(201).json({ log });
-//   } catch (e) {
-//     next(e);
-//   }
-// });
-
-// router.get('/exercise', security.requireAuthenticatedUser, async (req, res, next) => {
-//   try {
-//     // take user email and password and  attempt to authenticate
-//     const user = await Tracking.login(req.body);
-//     return res.status(200).json({ user });
-//   } catch (e) {
-//     next(e);
-//   }
-// });
-
-// router.post('/e', security.requireAuthenticatedUser, async (req, res, next) => {
-//   try {
-//     // take user information and attempt create in user in database
-//     const { email } = res.locals.user;
-//     const log = await Tracking.addToLog(email, "nutrition", req.body.nutrition);
-//     return res.status(201).json({ log });
-//   } catch (e) {
-//     next(e);
-//   }
-// });
 
 module.exports = router;
