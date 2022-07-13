@@ -18,7 +18,7 @@ function getDatabaseUri() {
   );
 }
 
-const BCRYPT_WORK_FACTOR = 13;
+const BCRYPT_WORK_FACTOR = 10;
 
 const SECRET_KEY = process.env.SECRET_KEY || 'ammarSecretKey';
 

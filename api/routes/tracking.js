@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Tracking = require('../models/tracking');
+const User = require('../models/users');
 const router = express.Router();
 const security = require('../middleware/security');
 const types = ['exercise', 'sleep', 'nutrition'];
@@ -12,11 +13,13 @@ const types = ['exercise', 'sleep', 'nutrition'];
 router.get('/', security.requireAuthenticatedUser, async (req, res, next) => {
   try {
     const { email } = res.locals.user;
+    const user = await Tracking.fetchUserByEmail(email);
+    const pubUser = await User.makePublicUser(user);
     let logs = {};
     for (const type of types) {
       logs[type] = await Tracking.fetchLogs(email, type);
     }
-    return res.status(200).json(logs);
+    return res.status(200).json({ user: pubUser, logs });
   } catch (e) {
     next(e);
   }

@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import {
   Input,
   Heading,
-  Container,
   Button,
   Stack,
   InputGroup,
   InputRightElement,
   Box,
   Center,
+  Text,
 } from '@chakra-ui/react';
 
 export default function Login({
   handleChangeLogin,
   loginInfo,
   handleOnSubmitLogin,
+  loginError,
 }) {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
@@ -23,7 +24,9 @@ export default function Login({
     <Center w="100%" p="10">
       <Box backgroundColor="white" borderRadius="lg" w="800px">
         <Heading padding="10">Log In</Heading>
+
         <Stack spacing="2" p="10">
+          <Text color="red">{loginError}</Text>
           <Input
             focusBorderColor="#F4A261"
             placeholder="email"

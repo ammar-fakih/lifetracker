@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ButtonGroup, Button, Container, Box } from '@chakra-ui/react';
+import { ButtonGroup, Button, Container, Box, Text } from '@chakra-ui/react';
 
-export default function NavBar() {
+export default function NavBar({ user, setUser }) {
   return (
     <Box className="nav-bar" w="100%" boxShadow="md">
       <NavLink to="/">
@@ -20,50 +20,81 @@ export default function NavBar() {
           }}>
           Activity
         </Button>
-        <Button
-          _hover={{
-            color: 'teal.500',
-          }}>
-          Exercise
-        </Button>
-        <Button
-          _hover={{
-            color: 'teal.500',
-          }}>
-          Nutrition
-        </Button>
-        <Button
-          _hover={{
-            color: 'teal.500',
-          }}>
-          Sleep
-        </Button>
-        <NavLink
-          to="/login"
-          style={({ isActive }) => {
-            return { color: isActive ? 'var(--orange)' : 'black' };
-          }}>
+        <NavLink to="/exercise">
           <Button
             _hover={{
               color: 'teal.500',
             }}>
-            Log In
+            Exercise
           </Button>
         </NavLink>
-        <NavLink
-          to="/signup"
-          style={({ isActive }) => {
-            return { color: isActive ? 'var(--orange)' : 'black' };
-          }}>
+
+        <NavLink to="/nutrition">
           <Button
             _hover={{
               color: 'teal.500',
-            }}
-            bg="green"
-            color="white">
-            Sign Up
+            }}>
+            Nutrition
           </Button>
         </NavLink>
+
+        <NavLink to="/sleep">
+          <Button
+            _hover={{
+              color: 'teal.500',
+            }}>
+            Sleep
+          </Button>
+        </NavLink>
+
+        {!user ? (
+          <>
+            <NavLink
+              to="/login"
+              style={({ isActive }) => {
+                return { color: isActive ? 'var(--orange)' : 'black' };
+              }}>
+              <Button
+                _hover={{
+                  color: 'teal.500',
+                }}>
+                Log In
+              </Button>
+            </NavLink>
+            <NavLink
+              to="/signup"
+              style={({ isActive }) => {
+                return { color: isActive ? 'var(--orange)' : 'black' };
+              }}>
+              <Button
+                _hover={{
+                  color: 'teal.500',
+                }}
+                bg="green"
+                color="white">
+                Sign Up
+              </Button>
+            </NavLink>
+          </>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                localStorage.clear();
+                setUser(null);
+              }}
+              _hover={{
+                color: 'teal.500',
+              }}
+              bg="green"
+              color="white">
+              Logout
+            </Button>
+            <Text color="white">
+              {user.firstName} {user.lastName}
+            </Text>
+          </>
+        )}
       </ButtonGroup>
     </Box>
   );
