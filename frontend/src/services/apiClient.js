@@ -50,6 +50,13 @@ class ApiClient {
       method: 'GET',
     });
   }
+
+  async getTracking(type) {
+    return await this.request({
+      endpoint: `/tracking/${type}`,
+      method: 'GET',
+    });
+  }
 }
 
 export default new ApiClient(

@@ -10,15 +10,45 @@ import {
   Center,
   Text,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login({
-  handleChangeLogin,
-  loginInfo,
-  handleOnSubmitLogin,
-  loginError,
-}) {
+import { authContext } from './App';
+import apiClient from '../services/apiClient';
+import { useEffect } from 'react';
+
+export default function Login() {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const {
+    user,
+    setUser,
+    setLoginError,
+    handleChangeLogin,
+    loginInfo,
+    loginError,
+  } = React.useContext(authContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/activity');
+    }
+  });
+
+  const handleOnSubmitLogin = async () => {
+    const response = await apiClient.login(loginInfo);
+    if (response.data?.user) {
+      console.log(response.data);
+      setUser(response.data.user);
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      navigate('/activity');
+      setLoginError('');
+    } else {
+      setLoginError('Invalid email or password');
+    }
+  };
 
   return (
     <Center w="100%" p="10">

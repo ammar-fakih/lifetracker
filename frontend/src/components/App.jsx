@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Home from './Home';
 import Login from './Login';
@@ -15,6 +15,11 @@ import Tracking from './Tracking';
 import TrackingForm from './TrackingForm';
 
 import { inputs } from '../constants';
+import Activity from './Activity';
+import NotFound from './NotFound';
+
+export const authContext = React.createContext();
+export const logContext = React.createContext();
 
 export default function App() {
   const [loginInfo, setLoginInfo] = React.useState({ email: '', password: '' });
@@ -28,6 +33,7 @@ export default function App() {
     confirmPassword: '',
   });
   const [user, setUser] = React.useState(null);
+  const [logs, setLogs] = React.useState({});
 
   useEffect(() => {
     const getUser = async () => {
@@ -63,69 +69,79 @@ export default function App() {
     }
   };
 
-  const handleOnSubmitLogin = async () => {
-    const response = await apiClient.login(loginInfo);
-    if (response.data?.user) {
-      console.log(response.data);
-      setUser(response.data.user);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-      }
-      setLoginError('');
-    } else {
-      setLoginError('Invalid email or password');
-    }
-  };
-
   return (
     <Box w="100%" style={{ height: '100vh' }}>
       <BrowserRouter>
-        <NavBar user={user} setUser={setUser} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/login"
-            element={
-              <Login
-                loginError={loginError}
-                handleChangeLogin={handleChangeLogin}
-                loginInfo={loginInfo}
-                handleOnSubmitLogin={handleOnSubmitLogin}
+        <logContext.Provider value={{ logs, setLogs }}>
+          <authContext.Provider
+            value={{
+              loginError,
+              handleChangeLogin,
+              loginInfo,
+              setLoginError,
+              setUser,
+              user,
+            }}>
+            <NavBar user={user} setUser={setUser} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/signup"
+                element={
+                  <Register
+                    handleChangeRegister={handleChangeRegister}
+                    registerInfo={registerInfo}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <Register
-                handleChangeRegister={handleChangeRegister}
-                registerInfo={registerInfo}
+              <Route path="/activity" element={<Activity />} />
+              <Route
+                path="/exercise"
+                element={
+                  <Tracking
+                    user={user}
+                    setUser={setUser}
+                    heading={'Exercise'}
+                  />
+                }
               />
-            }
-          />
-          <Route path="/exercise" element={<Tracking heading={'Exercise'} />} />
-          <Route path="/sleep" element={<Tracking heading={'Sleep'} />} />
-          <Route
-            path="/nutrition"
-            element={<Tracking heading={'Nutrition'} />}
-          />
-          <Route
-            path="/exercise/create"
-            element={
-              <TrackingForm heading="Exercise" inputs={inputs.exercise} />
-            }
-          />
-          <Route
-            path="/sleep/create"
-            element={<TrackingForm heading="Sleep" inputs={inputs.sleep} />}
-          />
-          <Route
-            path="/nutrition/create"
-            element={
-              <TrackingForm heading="Nutrition" inputs={inputs.nutrition} />
-            }
-          />
-        </Routes>
+              <Route
+                path="/sleep"
+                element={
+                  <Tracking user={user} setUser={setUser} heading={'Sleep'} />
+                }
+              />
+              <Route
+                path="/nutrition"
+                element={
+                  <Tracking
+                    user={user}
+                    setUser={setUser}
+                    heading={'Nutrition'}
+                  />
+                }
+              />
+              <Route
+                path="/exercise/create"
+                element={
+                  <TrackingForm heading="Exercise" inputs={inputs.exercise} />
+                }
+              />
+              <Route
+                path="/sleep/create"
+                element={<TrackingForm heading="Sleep" inputs={inputs.sleep} />}
+              />
+              <Route
+                path="/nutrition/create"
+                element={
+                  <TrackingForm heading="Nutrition" inputs={inputs.nutrition} />
+                }
+              />
+              <Route path="/*" element={<NotFound />} />
+            </Routes>
+          </authContext.Provider>
+        </logContext.Provider>
       </BrowserRouter>
     </Box>
   );

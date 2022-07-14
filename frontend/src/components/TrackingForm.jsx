@@ -9,14 +9,15 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Text,
+  Button,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function TrackingForm({ heading, inputs = [] }) {
   return (
     <Center>
       <Stack margin={10} spacing={3} w="50%" maxW="2000px">
-        <Heading textAlign={'center'} color="white">
+        <Heading color="white">
           Create {heading}
         </Heading>
         {inputs.map((input) => {
@@ -49,6 +50,9 @@ export default function TrackingForm({ heading, inputs = [] }) {
               return null;
           }
         })}
+        <Center>
+          <Button >Submit</Button>
+        </Center>
       </Stack>
     </Center>
   );

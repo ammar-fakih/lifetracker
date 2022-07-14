@@ -14,12 +14,15 @@ export default function NavBar({ user, setUser }) {
       </NavLink>
 
       <ButtonGroup spacing="6">
-        <Button
-          _hover={{
-            color: 'teal.500',
-          }}>
-          Activity
-        </Button>
+        <NavLink to="/activity">
+          <Button
+            _hover={{
+              color: 'teal.500',
+            }}>
+            Activity
+          </Button>
+        </NavLink>
+
         <NavLink to="/exercise">
           <Button
             _hover={{
