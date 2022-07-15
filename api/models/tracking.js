@@ -94,7 +94,7 @@ class Tracking {
     const { id } = await this.fetchUserByEmail(email);
 
     const query1 = `
-    SELECT    sum(duration) as total_duration,
+    SELECT    sum(duration) AS total_duration,
               avg(duration) AS avg_exercise_duration,
               to_char(avg(end_time - start_time), 'HH24') AS avg_sleep_time,
               avg(intensity) AS avg_intensity,
