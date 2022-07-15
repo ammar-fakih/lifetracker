@@ -39,30 +39,41 @@ Implement any of the following features to improve the application:
 
 ### Walkthrough Video
 
-`TODO://` Add the embedded URL code to your animated app walkthrough below, `ADD_EMBEDDED_CODE_HERE`. Make sure the video or gif actually renders and animates when viewing this README. (🚫 Remove this paragraph after adding walkthrough video)
-
-<div style="position: relative; padding-bottom: 62.5%; height: 0;"><iframe src="https://www.loom.com/embed/08d5b10774fc48e58011604abf99f4c2" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+Link: https://www.loom.com/share/08d5b10774fc48e58011604abf99f4c2
 
 ### Reflection
 
 * Did the topics discussed in your labs prepare you to complete the assignment? Be specific, which features in your weekly assignment did you feel unprepared to complete?
 
-
+Yes, I used what we learned about postgreSQL to create a database to store user data. I used what we learned about json web tokens to save a token to keep a user logged in when they leave and come back to the page. I also used bcrypt to hash the passwords for user accounts.
 
 * If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
   
-[Add your response here]
+If I had more time, I would attempt to fix the various bugs in the app. For example, if the user inputs invalid information, the app should show an error, telling the user what to change. I would also add some more sql queries to practice what I have learned. 
 
 * Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 
-[Add your response here]
+I was able to show the features that work best. However, I should have showed more of the server and database capabilities with Postman.
 
 ### Open-source libraries used
 
 - Add any links to open-source libraries used in your project.
 
+- https://reactjs.org/
+- https://chakra-ui.com/
+- https://axios-http.com/
+- https://lodash.com/
+- https://momentjs.com/
+- https://www.npmjs.com/package/react-datetime-picker
+- https://www.npmjs.com/package/bcrypt
+- https://www.npmjs.com/package/colors
+- https://www.npmjs.com/package/dotenv
+- https://www.npmjs.com/package/morgan
+- https://www.npmjs.com/package/jsonwebtoken
+- https://www.npmjs.com/package/nodemon
+
 ### Shout out
 
 Give a shout out to somebody from your cohort that especially helped you during your project. This can be a fellow peer, instructor, TA, mentor, etc.
 
-[Add your response here]
+I would like to shoutout the TAs and instructors for providing us with a great education and for always helping us maximize our learning.
