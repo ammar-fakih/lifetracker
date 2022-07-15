@@ -2,8 +2,8 @@ export const inputs = {
   exercise: [
     { name: 'Exercise Name', type: 'text', dbName: 'name' },
     { name: 'Exercise Category', type: 'text', dbName: 'category' },
-    { name: 'Duration', type: 'number', dbName: 'duration' },
-    { name: 'Intensity', type: 'number', dbName: 'intensity' },
+    { name: 'Duration (min)', type: 'number', dbName: 'duration' },
+    { name: 'Intensity (1-10)', type: 'number', dbName: 'intensity' },
   ],
   nutrition: [
     { name: 'Nutrition Name', type: 'text', dbName: 'name' },

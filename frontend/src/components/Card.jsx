@@ -3,6 +3,17 @@ import React from 'react';
 import moment from 'moment';
 
 export default function Card({ item, type }) {
+  const formatAMPM = (date) => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes.toString().padStart(2, '0');
+    let strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  };
+
   const renderExercise = () => {
     return (
       <Stack width="100%" mt="5" mb="5">
@@ -59,15 +70,13 @@ export default function Card({ item, type }) {
   const renderSleep = () => {
     const startDate = new Date(item.start_time);
     const endDate = new Date(item.end_time);
-    const createdAt = new Date(item.created_at);
     const startMoment = moment(startDate);
     const endMoment = moment(endDate);
-    const sub = endDate - startDate;
     return (
       <Stack width="100%" mt="5" mb="5">
         <Flex justify={'space-around'}>
           <Heading size={'md'}>
-            {createdAt.getDay()}/{createdAt.getDate()}/{createdAt.getFullYear()}
+            {startDate.getDay()}/{startDate.getDate()}/{startDate.getFullYear()}
           </Heading>
         </Flex>
         <Flex width="100%" justifyContent={'space-around'}>
@@ -75,12 +84,8 @@ export default function Card({ item, type }) {
           <Text fontWeight={600}>End Time</Text>
         </Flex>
         <Flex justifyContent={'space-around'}>
-          <Text>
-            {startDate.getHours()}:{startDate.getMinutes()}
-          </Text>
-          <Text>
-            {endDate.getHours()}:{endDate.getMinutes()}
-          </Text>
+          <Text>{formatAMPM(startDate)}</Text>
+          <Text>{formatAMPM(endDate)}</Text>
         </Flex>
         <Flex justifyContent={'space-around'}>
           <Text>

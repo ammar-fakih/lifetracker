@@ -18,7 +18,7 @@ app.use(morgan('tiny'));
 app.use(security.extractUserFromJwt);
 
 app.get('/', (req, res) => {
-  res.send({ ping: pong });
+  res.send({ ping: "pong" });
 });
 
 app.use('/auth', authRoutes);

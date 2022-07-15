@@ -3,43 +3,45 @@ import React, { useEffect } from 'react';
 import apiClient from '../services/apiClient';
 import Login from './Login';
 
-export default function Activity({ user }) {
+export default function Activity({ user, logs }) {
   const [activities, setActivities] = React.useState({});
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!apiClient.token) {
-        return;
-      }
       try {
         const response = await apiClient.getActivity();
         setActivities(response.data);
+        console.log(response.data);
       } catch (e) {
         console.log(e);
       }
     };
 
     fetchData();
-  }, []);
+  }, [logs]);
 
   const Item = ({ header, data }) => {
     return (
-      <Flex
-        color="white"
-        p="3"
-        w="360px"
-        h="200px"
-        bg="primary.400"
-        rounded="lg"
-        shadow={'lg'}
-        margin="5"
-        direction={'column'}
-        align="center">
-        <Heading flex="1" size="lg" textAlign={'center'}>
-          {header}
-        </Heading>
-        <Heading flex="1">{data}</Heading>
-      </Flex>
+      <>
+        {data && (
+          <Flex
+            color="white"
+            p="3"
+            w="360px"
+            h="200px"
+            bg="primary.400"
+            rounded="lg"
+            shadow={'lg'}
+            margin="5"
+            direction={'column'}
+            align="center">
+            <Heading flex="1" size="lg" textAlign={'center'}>
+              {header}
+            </Heading>
+            <Heading flex="1">{data}</Heading>
+          </Flex>
+        )}
+      </>
     );
   };
 
@@ -48,6 +50,12 @@ export default function Activity({ user }) {
       {user ? (
         <Flex direction="column" align={'center'}>
           <Heading>Activity Feed</Heading>
+
+          {!Object.keys(activities).find((item) => !!activities[item]) && (
+            <Heading mt="10" size="md">
+              Nothing to see here
+            </Heading>
+          )}
 
           <Flex margin="20" wrap="wrap" maxW="1600px">
             <Item
