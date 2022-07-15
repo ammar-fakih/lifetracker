@@ -72,8 +72,16 @@ class ApiClient {
       method: 'GET',
     });
   }
+
+  async deleteTracking(type, logId) {
+    return await this.request({
+      endpoint: `/tracking/${type}/${logId}`,
+      method: 'DELETE',
+    });
+  }
 }
 
 export default new ApiClient(
   process.env.REACT_APP_REMOTE_HOST_URL || 'https://ammar-tracker.herokuapp.com'
+  // 'http://localhost:3001'
 );

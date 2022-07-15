@@ -34,11 +34,10 @@ export default function Register({
       setError('');
     } catch (error) {
       setError(error.response?.data?.error?.message);
+      
       console.log(error);
     }
   };
-
-  console.log(error);
 
   return (
     <Center w="100%" p="10">

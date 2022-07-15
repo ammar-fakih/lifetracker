@@ -106,6 +106,30 @@ class Tracking {
 
     return result.rows[0];
   }
+
+  static async deleteLog(email, logId, type) {
+    switch (type) {
+      case 'sleep':
+        var dbName = 'sleep_logs';
+        break;
+      case 'nutrition':
+        var dbName = 'nutrition_logs';
+        break;
+      case 'exercise':
+        var dbName = 'exercises';
+        break;
+      default:
+        throw new BadRequestError('Invalid type');
+    }
+
+    const { id } = await this.fetchUserByEmail(email);
+
+    const query = `DELETE FROM ${dbName} WHERE id = $1 AND user_id = $2`;
+
+    const result = await db.query(query, [logId, id]);
+
+    return result.rows[0];
+  }
 }
 
 module.exports = Tracking;

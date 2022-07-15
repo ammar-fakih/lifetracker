@@ -38,7 +38,7 @@ function Tracking({ heading, setUser, user }) {
           <Flex minW="80%" wrap={'wrap'} mr="20" ml="20">
             {logs[heading.toLowerCase()].map((item) => {
               return (
-                <Card key={item.id} item={item} type={heading.toLowerCase()} />
+                <Card setLogs={setLogs} logs={logs} key={item.id} item={item} type={heading.toLowerCase()} />
               );
             })}
           </Flex>

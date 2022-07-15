@@ -1,8 +1,12 @@
 import { Button, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import moment from 'moment';
+import apiClient from '../services/apiClient';
 
-export default function Card({ item, type }) {
+import { getTracking } from './Tracking';
+
+export default function Card({ item, type, setLogs, logs }) {
+  const [imageBroken, setImageBroken] = React.useState(false);
   const formatAMPM = (date) => {
     let hours = date.getHours();
     let minutes = date.getMinutes();
@@ -12,6 +16,18 @@ export default function Card({ item, type }) {
     minutes = minutes.toString().padStart(2, '0');
     let strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
+  };
+
+  const handleDeleteCard = async () => {
+    try {
+      await apiClient.deleteTracking(type, item.id);
+      setLogs({
+        ...logs,
+        [type]: logs[type].filter((log) => log.id !== item.id),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderExercise = () => {
@@ -44,7 +60,18 @@ export default function Card({ item, type }) {
     return (
       <Stack width="100%" mt="5" mb="5">
         <Flex justify={'space-around'}>
-          <Image src={item.image_url} alt={item.name} w="auto" h="50px" />
+          {!imageBroken && (
+            <img
+              onError={() => {
+                setImageBroken(true);
+              }}
+              src={item.image_url}
+              alt={item.name}
+              width="auto"
+              height="50px"
+            />
+          )}
+
           <Heading size={'lg'}>{item.name}</Heading>
         </Flex>
         <Flex width="100%" justifyContent={'space-around'}>
@@ -107,7 +134,11 @@ export default function Card({ item, type }) {
       maxW={'350px'}
       padding={'2'}
       margin="2">
-      <Button color="red" position={'absolute'} size="xs">
+      <Button
+        color="red"
+        position={'absolute'}
+        size="xs"
+        onClick={handleDeleteCard}>
         X
       </Button>
       {type === 'exercise'

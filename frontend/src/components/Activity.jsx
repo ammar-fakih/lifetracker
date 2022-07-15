@@ -19,7 +19,7 @@ export default function Activity({ user, logs }) {
     };
 
     fetchData();
-  }, [logs]);
+  }, [logs, user]);
 
   const Item = ({ header, data }) => {
     return (
@@ -45,6 +45,8 @@ export default function Activity({ user, logs }) {
       </>
     );
   };
+
+  console.log(activities)
 
   return (
     <>

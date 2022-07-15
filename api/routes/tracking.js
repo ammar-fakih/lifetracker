@@ -39,6 +39,21 @@ router.get(
   }
 );
 
+router.delete(
+  '/:type/:logId',
+  security.requireAuthenticatedUser,
+  async (req, res, next) => {
+    try {
+      const { type, logId } = req.params;
+      const { email } = res.locals.user;
+      const response = await Tracking.deleteLog(email, logId, type);
+      return res.status(200).json({ response });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
 router.get(
   '/:type',
   security.requireAuthenticatedUser,
