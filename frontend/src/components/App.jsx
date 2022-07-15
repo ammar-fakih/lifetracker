@@ -6,7 +6,6 @@ import Login from './Login';
 import Register from './Register';
 import apiClient from '../services/apiClient';
 
-import '../styles.css';
 import '../root.css';
 
 import NavBar from './NavBar';
@@ -82,7 +81,12 @@ export default function App() {
               setUser,
               user,
             }}>
-            <NavBar user={user} setUser={setUser} />
+            <NavBar
+              user={user}
+              setUser={setUser}
+              logs={logs}
+              setLogs={setLogs}
+            />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -90,6 +94,7 @@ export default function App() {
                 path="/signup"
                 element={
                   <Register
+                    setUser={setUser}
                     handleChangeRegister={handleChangeRegister}
                     registerInfo={registerInfo}
                   />

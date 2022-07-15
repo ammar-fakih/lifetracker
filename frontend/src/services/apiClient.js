@@ -57,6 +57,14 @@ class ApiClient {
       method: 'GET',
     });
   }
+
+  async addTracking(type, data) {
+    return await this.request({
+      endpoint: `/tracking/${type}`,
+      method: 'POST',
+      data,
+    });
+  }
 }
 
 export default new ApiClient(

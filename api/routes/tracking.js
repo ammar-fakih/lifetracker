@@ -46,7 +46,7 @@ router.post(
   security.requireAuthenticatedUser,
   async (req, res, next) => {
     try {
-      // take user information and attempt create in user in database
+      // take user information and attempt to create user in database
       const { type } = req.params;
       const data = req.body[type];
       const { email } = res.locals.user;

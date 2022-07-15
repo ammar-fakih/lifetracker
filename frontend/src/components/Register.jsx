@@ -8,20 +8,43 @@ import {
   InputRightElement,
   Box,
   Center,
+  Text,
 } from '@chakra-ui/react';
+import apiClient from '../services/apiClient';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register({
   handleChangeRegister,
   registerInfo,
-  handleOnSubmitRegister,
+  setUser,
 }) {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleOnSubmit = async () => {
+    try {
+      const response = await apiClient.signup(registerInfo);
+      if (response?.data?.token) {
+        localStorage.setItem('token', response.data.token);
+        setUser(response.data.user);
+        navigate('/activity');
+      }
+      setError('');
+    } catch (error) {
+      setError(error.response?.data?.error?.message);
+      console.log(error);
+    }
+  };
+
+  console.log(error);
 
   return (
     <Center w="100%" p="10">
       <Box backgroundColor="white" borderRadius="lg" w="800px">
         <Heading padding="10">Register</Heading>
+        <Text color="red">{error}</Text>
         <Stack spacing="2" p="10">
           <Input
             focusBorderColor="#F4A261"
@@ -40,7 +63,7 @@ export default function Register({
             }}
             value={registerInfo.email}
           />
-          <InputGroup marginX={"20"}>
+          <InputGroup marginX={'20'}>
             <Input
               focusBorderColor="#F4A261"
               placeholder="first name"
@@ -56,7 +79,7 @@ export default function Register({
                   confirmPassword: registerInfo.confirmPassword,
                 });
               }}
-              value={registerInfo.email}
+              value={registerInfo.firstName}
             />
             <Input
               focusBorderColor="#F4A261"
@@ -73,7 +96,7 @@ export default function Register({
                   confirmPassword: registerInfo.confirmPassword,
                 });
               }}
-              value={registerInfo.email}
+              value={registerInfo.lastName}
             />
           </InputGroup>
           <InputGroup size="md">
@@ -102,7 +125,7 @@ export default function Register({
             </InputRightElement>
           </InputGroup>
 
-          <Button onClick={handleOnSubmitRegister}>Log In</Button>
+          <Button onClick={handleOnSubmit}>Sign up</Button>
         </Stack>
       </Box>
     </Center>

@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Heading, Stack } from '@chakra-ui/react';
+import { Button, Center, Container, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -9,38 +9,33 @@ import Login from './Login';
 import { logContext } from './App';
 import Card from './Card';
 
+export const getTracking = async (heading, logs, setLogs, setUser) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (token) {
+      apiClient.setToken(token);
+      const response = await apiClient.getTracking(heading);
+      if (response?.data?.[heading]) {
+        setLogs({ ...logs, [heading]: response.data[heading] });
+      }
+    }
+  } catch (e) {
+    setUser(null);
+  }
+};
+
 function Tracking({ heading, setUser, user }) {
   const { logs, setLogs } = React.useContext(logContext);
 
   useEffect(() => {
-    const getTracking = async () => {
-      try {
-        const hCode = heading.toLowerCase();
-        const token = localStorage.getItem('token');
-        if (token) {
-          apiClient.setToken(token);
-          const response = await apiClient.getTracking(hCode);
-          console.log(response);
-          if (response?.data?.[hCode]) {
-            console.log(response.data[hCode]);
-            setLogs[hCode] = response.data[hCode];
-          }
-        }
-      } catch (e) {
-        setUser(null);
-      }
-    };
-
-    getTracking();
+    getTracking(heading.toLowerCase(), logs, setLogs, setUser);
   }, []);
-
-  console.log('logs', logs);
 
   const renderCards = () => {
     return (
-      <Box>
+      <Center justify={'center'} align="center" w="100%">
         {_.isObject(logs) && _.isArray(logs[heading.toLowerCase()]) ? (
-          <Flex wrap={'wrap'}>
+          <Flex minW="80%" wrap={'wrap'} mr="20" ml="20">
             {logs[heading.toLowerCase()].map((item) => {
               return (
                 <Card key={item.id} item={item} type={heading.toLowerCase()} />
@@ -48,29 +43,23 @@ function Tracking({ heading, setUser, user }) {
             })}
           </Flex>
         ) : null}
-      </Box>
+      </Center>
     );
   };
 
   return (
     <>
       {user ? (
-        <Container w="100%">
-          <Stack>
-            <Heading p="2" textAlign={'center'} color="white">
-              {heading}
-            </Heading>
-            <Flex justifyContent={'space-between'}>
-              <Heading maxW="300px" textAlign={'center'} color="#fff">
-                Overview
-              </Heading>
-              <NavLink to={`/${heading.toLowerCase()}/create`}>
-                <Button maxW="300px">Add {heading}</Button>
-              </NavLink>
-            </Flex>
-            {renderCards()}
-          </Stack>
-        </Container>
+        <Flex direction={'column'} w="100%">
+          <Flex justifyContent={'space-around'} alignContent={'center'} mb="20">
+            <Heading>{heading}</Heading>
+            <NavLink to={`/${heading.toLowerCase()}/create`}>
+              <Button maxW="300px">Add {heading}</Button>
+            </NavLink>
+          </Flex>
+
+          {renderCards()}
+        </Flex>
       ) : (
         <Container>
           <Heading size={'lg'} textAlign="center">
