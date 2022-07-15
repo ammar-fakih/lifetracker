@@ -1,4 +1,5 @@
 import { Container, Flex, Heading, Text } from '@chakra-ui/react';
+import _ from 'lodash';
 import React, { useEffect } from 'react';
 import apiClient from '../services/apiClient';
 import Login from './Login';
@@ -51,7 +52,7 @@ export default function Activity({ user, logs }) {
         <Flex direction="column" align={'center'}>
           <Heading>Activity Feed</Heading>
 
-          {!Object.keys(activities).find((item) => !!activities[item]) && (
+          {_.isObject(activities) && !Object.keys(activities).find((item) => !!activities[item]) && (
             <Heading mt="10" size="md">
               Nothing to see here
             </Heading>
