@@ -100,7 +100,7 @@ export default function App() {
                   />
                 }
               />
-              <Route path="/activity" element={<Activity />} />
+              <Route path="/activity" element={<Activity user={user} />} />
               <Route
                 path="/exercise"
                 element={

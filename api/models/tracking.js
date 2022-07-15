@@ -23,7 +23,6 @@ class Tracking {
    * @param {string} type - enum ('sleep_logs', 'nutrition_logs', 'exercises')
    */
   static async addToLog(email, data, type) {
-    console.log(email);
     let requiredFields;
     let dbName;
     const { id } = await this.fetchUserByEmail(email);
@@ -63,8 +62,6 @@ class Tracking {
     RETURNING     *
     `;
 
-    console.log(query);
-
     const result = await db.query(query, [id, ...Object.values(data)]);
 
     return result.rows[0];
@@ -91,6 +88,23 @@ class Tracking {
     const result = await db.query(query, [id]);
 
     return result.rows;
+  }
+
+  static async fetchActivities(email) {
+    const { id } = await this.fetchUserByEmail(email);
+
+    const query1 = `
+    SELECT    sum(duration) as total_duration,
+              avg(duration) AS avg_exercise_duration,
+              to_char(avg(end_time - start_time), 'HH24') AS avg_sleep_time,
+              avg(intensity) AS avg_intensity,
+              to_char(sum(end_time - start_time), 'HH24') AS total_sleep_time
+    FROM      exercises
+    JOIN      sleep_logs ON sleep_logs.user_id = exercises.user_id
+    WHERE     exercises.user_id = $1`;
+    const result = await db.query(query1, [id]);
+
+    return result.rows[0];
   }
 }
 

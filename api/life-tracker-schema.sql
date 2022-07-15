@@ -12,7 +12,7 @@ CREATE TABLE exercises (
   name TEXT NOT NULL,
   category TEXT NOT NULL,
   duration INTEGER NOT NULL,
-  intensity TEXT NOT NULL,
+  intensity INTEGER NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   user_id INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE

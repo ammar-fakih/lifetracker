@@ -26,6 +26,20 @@ router.get('/', security.requireAuthenticatedUser, async (req, res, next) => {
 });
 
 router.get(
+  '/activity',
+  security.requireAuthenticatedUser,
+  async (req, res, next) => {
+    try {
+      const { email } = res.locals.user;
+      const response = await Tracking.fetchActivities(email);
+      return res.status(200).json(response);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+router.get(
   '/:type',
   security.requireAuthenticatedUser,
   async (req, res, next) => {

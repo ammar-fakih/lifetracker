@@ -1,25 +1,29 @@
-import { Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import moment from 'moment';
 
 export default function Card({ item, type }) {
   const renderExercise = () => {
     return (
-      <Stack width="100%">
+      <Stack width="100%" mt="5" mb="5">
         <Flex justify={'space-around'}>
-          <Heading size={'md'}>{item.name}</Heading>
+          <Heading size={'lg'}>{item.name}</Heading>
         </Flex>
-        <Flex width="100%" justifyContent={'space-around'}>
-          <Text fontWeight={600}>Duration</Text>
-          <Text fontWeight={600}>Intensity</Text>
+        <Flex width="100%">
+          <Text flex="1" fontWeight={600}>
+            Duration
+          </Text>
+          <Text flex="1" fontWeight={600}>
+            Intensity
+          </Text>
         </Flex>
         <Flex justifyContent={'space-around'}>
-          <Text>{item.duration}</Text>
-          <Text>{item.intensity}</Text>
+          <Text flex="1">{item.duration}</Text>
+          <Text flex="1">{item.intensity}</Text>
         </Flex>
         <Flex justifyContent={'space-around'}>
-          <Text>{item.created_at.slice(0, 10)}</Text>
-          <Text>{item.category}</Text>
+          <Text flex="1">{item.created_at.slice(0, 10)}</Text>
+          <Text flex="1">{item.category}</Text>
         </Flex>
       </Stack>
     );
@@ -27,22 +31,26 @@ export default function Card({ item, type }) {
 
   const renderNutrition = () => {
     return (
-      <Stack width="100%">
+      <Stack width="100%" mt="5" mb="5">
         <Flex justify={'space-around'}>
-          <Image src={item.image} alt={item.name} />
-          <Heading size={'md'}>{item.name}</Heading>
+          <Image src={item.image_url} alt={item.name} w="auto" h="50px" />
+          <Heading size={'lg'}>{item.name}</Heading>
         </Flex>
         <Flex width="100%" justifyContent={'space-around'}>
-          <Text fontWeight={600}>Calories</Text>
-          <Text fontWeight={600}>Quantity</Text>
+          <Text flex="1" fontWeight={600}>
+            Calories
+          </Text>
+          <Text flex="1" fontWeight={600}>
+            Quantity
+          </Text>
         </Flex>
         <Flex justifyContent={'space-around'}>
-          <Text>{item.calories}</Text>
-          <Text>{item.quantity}</Text>
+          <Text flex="1">{item.calories}</Text>
+          <Text flex="1">{item.quantity}</Text>
         </Flex>
         <Flex justifyContent={'space-around'}>
-          <Text>{item.created_at.slice(0, 10)}</Text>
-          <Text>{item.category}</Text>
+          <Text flex="1">{item.created_at.slice(0, 10)}</Text>
+          <Text flex="1">{item.category}</Text>
         </Flex>
       </Stack>
     );
@@ -56,7 +64,7 @@ export default function Card({ item, type }) {
     const endMoment = moment(endDate);
     const sub = endDate - startDate;
     return (
-      <Stack width="100%">
+      <Stack width="100%" mt="5" mb="5">
         <Flex justify={'space-around'}>
           <Heading size={'md'}>
             {createdAt.getDay()}/{createdAt.getDate()}/{createdAt.getFullYear()}
@@ -92,8 +100,11 @@ export default function Card({ item, type }) {
       dir="column"
       width={'350px'}
       maxW={'350px'}
-      padding={'5'}
+      padding={'2'}
       margin="2">
+      <Button color="red" position={'absolute'} size="xs">
+        X
+      </Button>
       {type === 'exercise'
         ? renderExercise()
         : type === 'nutrition'

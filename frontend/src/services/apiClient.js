@@ -65,6 +65,13 @@ class ApiClient {
       data,
     });
   }
+
+  async getActivity() {
+    return await this.request({
+      endpoint: '/tracking/activity',
+      method: 'GET',
+    });
+  }
 }
 
 export default new ApiClient(

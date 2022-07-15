@@ -1,7 +1,27 @@
-import { Flex, Heading, Text } from '@chakra-ui/react';
-import React from 'react';
+import { Container, Flex, Heading, Text } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import apiClient from '../services/apiClient';
+import Login from './Login';
 
-export default function Activity() {
+export default function Activity({ user }) {
+  const [activities, setActivities] = React.useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!apiClient.token) {
+        return;
+      }
+      try {
+        const response = await apiClient.getActivity();
+        setActivities(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const Item = ({ header, data }) => {
     return (
       <Flex
@@ -24,17 +44,50 @@ export default function Activity() {
   };
 
   return (
-    <Flex direction="column" align={'center'}>
-      <Heading>Activity Feed</Heading>
+    <>
+      {user ? (
+        <Flex direction="column" align={'center'}>
+          <Heading>Activity Feed</Heading>
 
-      <Flex margin="20" wrap="wrap" maxW="1600px">
-        <Item header="Total Exercise Minutes" data="20" />
-        <Item header="Average Sleep Hours" />
-        <Item header="Average Daily Calories" />
-        <Item header="Maximum Hourly Calories"/>
-        <Item header="Average Exercise Intensity"/>
-        <Item header="Total Hours Slept"/>
-      </Flex>
-    </Flex>
+          <Flex margin="20" wrap="wrap" maxW="1600px">
+            <Item
+              header="Total Exercise Minutes"
+              data={
+                activities?.total_duration ? activities.total_duration : null
+              }
+            />
+            <Item
+              header="Average Sleep Hours"
+              data={
+                activities?.avg_sleep_time ? activities.avg_sleep_time : null
+              }
+            />
+            <Item
+              header="Average Exercise Intensity"
+              data={
+                activities?.avg_intensity
+                  ? Math.floor(activities.avg_intensity)
+                  : null
+              }
+            />
+            <Item
+              header="Total Hours Slept"
+              data={
+                activities?.total_sleep_time
+                  ? activities.total_sleep_time
+                  : null
+              }
+            />
+          </Flex>
+        </Flex>
+      ) : (
+        <Container>
+          <Heading size={'lg'} textAlign="center">
+            You must be logged in to view this page.
+          </Heading>
+          <Login />
+        </Container>
+      )}
+    </>
   );
 }
